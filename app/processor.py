@@ -58,7 +58,33 @@ class Text_proceessor():
         self.df["weapons_detected"] = self.df.apply(self.get_waepon_from_tweet,axis=1)
 
 
+        
+
+    def get_num_word_in_text(self,word,text)->int:
+        return sum([i == word for i in text])
+
+
+    def get_word_rarest_from_tweet(self,tweet)->str:
+        text = tweet['Text'].split(' ')
+        min_word = ''
+        min_num  = 0
+        for word in text:
+            num = self.get_num_word_in_text()
+            if num == 1:
+                return word
+            if num < min_num or min_num == 0:
+                min_num = num
+                min_word = word
+        return min_word
+
+
+    def word_rarest(self):
+        self.df['word_rarest'] = self.df.apply(self.get_word_rarest_from_tweet,axis=1)
+
+
+
     def process_data(self):
+        self.word_rarest()
         self.classification()
         self.weapons_detected()
 
