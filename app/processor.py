@@ -2,6 +2,12 @@ import pandas
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 # nltk.download('vader_lexicon')
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+
+
 class Text_proceessor():
 
     def __init__(self,data):
@@ -47,15 +53,15 @@ class Text_proceessor():
             # print(tlist)
         return tlist
     
-    def get_waepon_from_tweet(self,tweet):
-        weapons = self.get_text_from_file(r'C:\Users\derme\Desktop\לימודים בני ברק\פיתון\Text Feature System\data\weapons.txt')
+    def get_weapon_from_tweet(self,tweet):
+        weapons = self.get_text_from_file(BASE_DIR / "data" / "weapons.txt")
         for word in tweet['Text'].split(' '):
             if word in weapons:
                 return word
         return ""
 
     def weapons_detected(self):
-        self.df["weapons_detected"] = self.df.apply(self.get_waepon_from_tweet,axis=1)
+        self.df["weapons_detected"] = self.df.apply(self.get_weapon_from_tweet,axis=1)
 
 
         
@@ -69,7 +75,7 @@ class Text_proceessor():
         min_word = ''
         min_num  = 0
         for word in text:
-            num = self.get_num_word_in_text()
+            num = self.get_num_word_in_text(word,text)
             if num == 1:
                 return word
             if num < min_num or min_num == 0:
